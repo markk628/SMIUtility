@@ -1,6 +1,4 @@
-# 🕷 makeutility
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/markk628/makeutility)](https://goreportcard.com/report/github.com/markk628/makeutility)
+# makeutility
 
 Create a utiity using what you learned from Go
 
