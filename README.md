@@ -30,8 +30,8 @@ StockUtility scrapes the 3 major stock market indexes' names and index percent c
 
 ## Third Party Libraries
 
-- [Colly](github.com/gocolly/colly)
-- [Now](github.com/jinzhu/now)
+- [Colly](https://github.com/gocolly/colly)
+- [Now](https://github.com/jinzhu/now)
 
 ## Resources
 
