@@ -23,7 +23,7 @@ type StockMarketIndex struct {
 
 // CreateJSONFile logs stock info in a json file
 func CreateJSONFile(filename string, smis []StockMarketIndex) {
-	jsonData, _ := json.MarshalIndent(smis, "", "    ")
+	jsonData, _ := json.MarshalIndent(smis, "", "	")
 
 	if err := ioutil.WriteFile(filename, jsonData, os.ModePerm); err != nil {
 		log.Fatal(err)
