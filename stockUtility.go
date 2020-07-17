@@ -23,9 +23,9 @@ type StockMarketIndex struct {
 
 // CreateJSONFile logs stock info in a json file
 func CreateJSONFile(filename string, smis []StockMarketIndex) {
-	jsonData, _ := json.MarshalIndent(smis, "", "	")
+	data, _ := json.MarshalIndent(smis, "", "	")
 
-	if err := ioutil.WriteFile(filename, jsonData, os.ModePerm); err != nil {
+	if err := ioutil.WriteFile(filename, data, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -44,7 +44,7 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 		smiPercent := e.ChildText("bg-quote.value")
 		dt := now.BeginningOfMinute()
 		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
-		smi := StockMarketIndex{
+		smi := StockMarketIndex {
 			Name:  smiName,
 			Index: smiPercent,
 			DateTime: dt,
@@ -67,7 +67,7 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 		smiPercent := e.ChildText("bg-quote.value")
 		dt := now.BeginningOfMinute()
 		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
-		smi := StockMarketIndex{
+		smi := StockMarketIndex {
 			Name:  smiName,
 			Index: smiPercent,
 			DateTime: dt,
@@ -102,7 +102,6 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 // main() contains code adapted from example found in Colly's docs:
 // http://go-colly.org/docs/examples/basic/
 func main() {
-
 	host := "0.0.0.0:8888"
 	http.HandleFunc("/", ScrapeSMI)
 	fmt.Printf("Localhost: http://%s\n", host)
