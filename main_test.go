@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/gocolly/colly"
-
 )
 
 // TestFileExists tests fileExists function
@@ -30,3 +29,4 @@ func TestResponse(t *testing.T) {
 
 	c.Visit("https://www.marketwatch.com/markets?mod=top_nav")
 }
+

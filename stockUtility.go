@@ -69,16 +69,13 @@ func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 		jsonEncoder.SetEscapeHTML(false)
 		jsonEncoder.Encode(smi)
 
+		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(bf.Bytes())
 	})
 
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
-	})
-
-	c.OnResponse(func(r *colly.Response) {
-		fmt.Println("Response", r.StatusCode)
 	})
 
 	c.OnError(func(_ *colly.Response, err error) {
