@@ -21,8 +21,18 @@ type StockMarketIndex struct {
 	DateTime time.Time `json:"date-time"`
 }
 
+func fileExists(filename string) bool {
+    info, err := os.Stat(filename)
+    if os.IsNotExist(err) {
+		fmt.Println("File Doesn't Exist")
+        return false
+	}
+	fmt.Println("File Exists")
+    return !info.IsDir()
+}
+
 // CreateJSONFile logs stock info in a json file
-func CreateJSONFile(filename string, smis []StockMarketIndex) {
+func createJSONFile(filename string, smis []StockMarketIndex) {
 	data, _ := json.MarshalIndent(smis, "", "	")
 
 	if err := ioutil.WriteFile(filename, data, os.ModePerm); err != nil {
@@ -31,20 +41,20 @@ func CreateJSONFile(filename string, smis []StockMarketIndex) {
 }
 
 // ScrapeSMI scrapes stock market indexes' data
-func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
+func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 	c := colly.NewCollector()
 	time.Now()
 
 	indexes := make([]StockMarketIndex, 0, 3)
 
-	// On every a element which has a.ticker__item.positive attribute call callback
+	// On every a element which has a.ticker__item.(positive or negative) attribute call callback
 	c.OnHTML("body > div.container.container--zone > div.region.region--primary > div.component.component--module.tickers-bar > div.column.column--full > div.element.element--ticker > div.content-wrapper > div.list.list--tickers > a.ticker__item", func(e *colly.HTMLElement) {
 
 		smiName := e.ChildText("span.label")
 		smiPercent := e.ChildText("bg-quote.value")
 
-		fmt.Println(smiName)
 		fmt.Println("____________")
+		fmt.Println(smiName)
 
 		dt := now.BeginningOfMinute()
 		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
@@ -74,7 +84,8 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 
 	c.OnScraped(func(r *colly.Response) {
 		fmt.Println("Finished", r.Request.URL)
-		CreateJSONFile("indexes.json", indexes)
+		createJSONFile("indexes.json", indexes)
+		fileExists("indexes.json")
 	})
 
 	c.Visit("https://www.marketwatch.com/markets?mod=top_nav")
@@ -84,7 +95,7 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 // http://go-colly.org/docs/examples/basic/
 func main() {
 	host := "0.0.0.0:8888"
-	http.HandleFunc("/", ScrapeSMI)
+	http.HandleFunc("/", scrapeSMI)
 	fmt.Printf("Localhost: http://%s\n", host)
 
 	err := http.ListenAndServe(host, nil)
