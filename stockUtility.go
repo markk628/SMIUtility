@@ -16,8 +16,8 @@ import (
 
 // StockMarketIndex is ...
 type StockMarketIndex struct {
-	Name  	 string    `json:"name"`
-	Index 	 string    `json:"index"`
+	Name     string    `json:"name"`
+	Index    string    `json:"index"`
 	DateTime time.Time `json:"date-time"`
 }
 
@@ -38,38 +38,19 @@ func ScrapeSMI(w http.ResponseWriter, r *http.Request) {
 	indexes := make([]StockMarketIndex, 0, 3)
 
 	// On every a element which has a.ticker__item.positive attribute call callback
-	c.OnHTML("body > div.container.container--zone > div.region.region--primary > div.component.component--module.tickers-bar > div.column.column--full > div.element.element--ticker > div.content-wrapper > div.list.list--tickers > a.ticker__item.positive", func(e *colly.HTMLElement) {
+	c.OnHTML("body > div.container.container--zone > div.region.region--primary > div.component.component--module.tickers-bar > div.column.column--full > div.element.element--ticker > div.content-wrapper > div.list.list--tickers > a.ticker__item", func(e *colly.HTMLElement) {
 
 		smiName := e.ChildText("span.label")
 		smiPercent := e.ChildText("bg-quote.value")
+
+		fmt.Println(smiName)
+		fmt.Println("____________")
+
 		dt := now.BeginningOfMinute()
 		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
-		smi := StockMarketIndex {
-			Name:  smiName,
-			Index: smiPercent,
-			DateTime: dt,
-		}
-		indexes = append(indexes, smi)
-
-		bf := bytes.NewBuffer([]byte{})
-		jsonEncoder := json.NewEncoder(bf)
-		jsonEncoder.SetEscapeHTML(false)
-		jsonEncoder.Encode(smi)
-
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(bf.Bytes())
-	})
-
-	// On every a element which has a.ticker__item.negative attribute call callback
-	c.OnHTML("body > div.container.container--zone > div.region.region--primary > div.component.component--module.tickers-bar > div.column.column--full > div.element.element--ticker > div.content-wrapper > div.list.list--tickers > a.ticker__item.negative", func(e *colly.HTMLElement) {
-	
-		smiName := e.ChildText("span.label")
-		smiPercent := e.ChildText("bg-quote.value")
-		dt := now.BeginningOfMinute()
-		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
-		smi := StockMarketIndex {
-			Name:  smiName,
-			Index: smiPercent,
+		smi := StockMarketIndex{
+			Name:     smiName,
+			Index:    smiPercent,
 			DateTime: dt,
 		}
 		indexes = append(indexes, smi)
