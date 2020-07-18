@@ -45,6 +45,8 @@ func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 	c := colly.NewCollector()
 	time.Now()
 
+	// var statusCode int
+
 	indexes := make([]StockMarketIndex, 0, 3)
 
 	// On every a element which has a.ticker__item.(positive or negative) attribute call callback
@@ -69,11 +71,14 @@ func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(bf.Bytes())
-		fmt.Println(w, r)
 	})
 
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
+	})
+
+	c.OnResponse(func(r *colly.Response) {
+		fmt.Println("Response", r.StatusCode)
 	})
 
 	c.OnError(func(_ *colly.Response, err error) {
