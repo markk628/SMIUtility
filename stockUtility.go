@@ -14,7 +14,7 @@ import (
 	"github.com/jinzhu/now"
 )
 
-// StockMarketIndex is ...
+// StockMarketIndex is a struct for a stock market index
 type StockMarketIndex struct {
 	Name     string    `json:"name"`
 	Index    string    `json:"index"`
@@ -53,9 +53,6 @@ func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 		smiName := e.ChildText("span.label")
 		smiPercent := e.ChildText("bg-quote.value")
 
-		fmt.Println("____________")
-		fmt.Println(smiName)
-
 		dt := now.BeginningOfMinute()
 		fmt.Printf("Stock Market Index: %s, Percent Change: %s, Date & Time: %s\n", smiName, smiPercent, dt)
 		smi := StockMarketIndex{
@@ -72,6 +69,7 @@ func scrapeSMI(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(bf.Bytes())
+		fmt.Println(w, r)
 	})
 
 	c.OnRequest(func(r *colly.Request) {

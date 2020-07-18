@@ -24,7 +24,9 @@ Create a utiity using what you learned from Go
 ## Project Description
 
 StockUtility scrapes the 3 major stock market indexes' names and index percent change and saves them onto a json file. It can also deploy the data to localhost.
-[Deck](https://docs.google.com/presentation/d/1lz822YO9Qc2k2z5hxrj7IItDhCWFh60mVqxIM0GG06A/edit?usp=sharing)
+
+## Deck
+[Google Slides](https://docs.google.com/presentation/d/1lz822YO9Qc2k2z5hxrj7IItDhCWFh60mVqxIM0GG06A/edit?usp=sharing)
 
 ## Third Party Libraries
 
@@ -35,5 +37,8 @@ StockUtility scrapes the 3 major stock market indexes' names and index percent c
 
 I'd like to thank Google/Youtube and my peer's and instructor's github
 
-### Github
+#### Github
 - [Get Punk](https://github.com/droxey/getpunk)
+
+#### Docs
+- [GoColly](http://go-colly.org/docs/)
